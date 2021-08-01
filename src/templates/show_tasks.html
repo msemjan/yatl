@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_task') }}" method=post class=add-task>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Description:
+        <dd><textarea name=description rows=5 cols=40 id="input"></textarea>
+        <dd><input type=submit value="Add new task">
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=tasks>
+  {% for entry in entries %}
+  <div class='task_box' id="task_{{ entry._id }}"> 
+    <div class='task_title'> <a href="{{ url_for('show_task', task_id=entry._id) }}"> {{ entry.title }} </a></div>
+    <div class='task_status'> {{ entry.status }} </div>
+    <div class='task_time'> {{ entry.time }} </div>
+    <div class'task_description'> {{ entry.description }} </div>
+    {% if session.logged_in %}
+    <div class='task_buttons'>
+      <form action="{{ url_for('remove_task', task_id=entry._id) }}" methods=('POST',) class=remove-task>
+        <input type="submit" value="Remove" name="remove_task{{ entry._id }}" class=deleteBtn text="Remove" onclick="return confirm('Are you sure?');", action="{{ url_for('remove_task', task_id=entry._id) }}" >
+      </form>
+      <form action="{{ url_for('progress_task', task_id=entry._id) }}" methods=('POST',) class=progress-task>
+        <input type="submit" value="In progress" name="progress_task{{ entry._id }}" class=normalBtn text="In progress" action="{{ url_for('progress_task', task_id=entry._id) }}" >
+      </form>
+      <form action="{{ url_for('finish_task', task_id=entry._id) }}" methods=('POST',) class=finish-task>
+        <input type="submit" value="Finish" name="finish_task{{ entry._id }}" class=normalBtn text="Finish" action="{{ url_for('finish_task', task_id=entry._id) }}" >
+      </form>
+      <form action="{{ url_for('edit_task', task_id=entry._id) }}" methods=('POST',) class=edit-task>
+        <input type="submit" value="Edit" name="edit_task{{ entry._id }}" class=normalBtn text="Edit" action="{{ url_for('edit_task', task_id=entry._id) }}" >
+      </form>
+    </div>
+    {% endif %}
+    </div>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
