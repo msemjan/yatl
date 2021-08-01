@@ -24,6 +24,11 @@ Prepare database:
 sqlite3 yatl.db < schema.sql
 ```
 
+Install dependencies with pip:
+```
+pip install -r requirements.txt
+```
+
 Set a password with enviroment variable (optional): 
 ```
 export YATL_PASSWORD="your new password"
