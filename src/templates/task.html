@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-    <form action="{{ url_for('edit_task', task_id=task._id) }}" method=post class=edit-task>
+    <form action="{{ url_for('edit_task', task_id=task._id) }}" method=post class=form>
+      <h2>Edit the task:</h2>
       <dl>
         <dt>Title:
           <dd><input type=text size=30 name=title value="{{ task.title }}">
         <dt>Description:
           <dd><textarea name=description rows=5 cols=40 id="input" value="{{ task.description }}">{{ task.description }}</textarea>
+        <dt>Status:
+          <dd>{{ task.status }}
         <dd><input type=submit value="Edit task">
       </dl>
     </form>
@@ -13,24 +16,29 @@
     <br>
 
     <div class=task_comment>
+      <h2>Comment the task:</h2>
       <form action="{{ url_for('comment_task', task_id=task._id) }}", method=post class=comment-post>
         <dl>
           <dd><input type=text size=80 name=txt>
+          <br>
           <dd><input type=submit value="Comment">
         </dl>
       </form>
     </div>
 
-    <div class=comments>
+    
+    {% if comments|length %}
+    <div class=task_box>
+    <h2>Comments:</h2>
     {% for comment in comments %}
+
       <div class=comment id="comment_{{ comment._id }}">
         [{{ comment.time }}] {{ comment.txt }}
         <form action="{{ url_for('remove_comment', comment_id=comment._id) }}" method=post class=comment-remove>
-          <input type="submit" value="Remove comment" name="remove_comment{{ comment._id }}" class=deleteBtn text="Remove comment" action="{{ url_for('remove_comment', comment_id=comment._id) }}" >
+          <input type="submit" value="Remove" name="remove_comment{{ comment._id }}" class=deleteBtn text="Remove" action="{{ url_for('remove_comment', comment_id=comment._id) }}" >
         </form>
       </div>
-    {% else %}
-       
     {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}

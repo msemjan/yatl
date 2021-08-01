@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
   {% if session.logged_in %}
+  <div class=form>
     <form action="{{ url_for('add_task') }}" method=post class=add-task>
+      Add new task:
       <dl>
         <dt>Title:
-        <dd><input type=text size=30 name=title>
+        <dd><input type=text name=title>
         <dt>Description:
-        <dd><textarea name=description rows=5 cols=40 id="input"></textarea>
+        <dd><textarea name=description id="input"></textarea>
         <dd><input type=submit value="Add new task">
       </dl>
     </form>
+  </div>
   {% endif %}
   <ul class=tasks>
   {% for entry in entries %}
@@ -36,7 +39,8 @@
     {% endif %}
     </div>
   {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
+    <br>
+    <li><em>Unbelievable.  No tasks so far. Add one now!</em>
   {% endfor %}
   </ul>
 {% endblock %}

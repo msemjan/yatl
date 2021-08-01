@@ -5,17 +5,25 @@
 <title>YATL</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-  <h1><a href="{{ url_for('show_tasks')}}">YATL</a></h1>
   <div class=metanav>
-  {% if not session.logged_in %}
-    <a href="{{ url_for('login') }}">log in</a>
-  {% else %}
-    <a href="{{ url_for('logout') }}">log out</a>
-  {% endif %}
+    <ul>
+      <li><a href="{{ url_for('show_tasks')}}">YATL</a> </li>
+      <li style="float:right">
+        {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}" text-align=right>log in</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}" text-align=right>log out</a>
+        {% endif %}
+      </li>
+    </ul>
+
+
   </div>
   {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
   {% endfor %}
+  <div class=content>
   {% block body %}
   {% endblock %}
+  </div>
 </div>

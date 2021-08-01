@@ -6,7 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from contextlib import closing
 
 DATABASE = './yatl.db'
-DEBUG = True
+DEBUG = False
 SECRET_KEY = 'development key'
 PASSWORD = os.getenv('YATL_PASSWORD') or 'PASSWORD'
 
@@ -78,7 +78,7 @@ def add_task():
         if request.form['description'] == '' or request.form['title'] == '':
             error = 'Title and description are mandatory!'
         else:
-            g.db.execute('INSERT INTO tasks (time, title, description, status) VALUES (?, ?, ?, ?);', [datetime.datetime.now(), request.form['title'], request.form['description'], 'New' ])
+            g.db.execute('INSERT INTO tasks (time, title, description, status) VALUES (?, ?, ?, ?);', [datetime.datetime.now().strftime('%x %X'), request.form['title'], request.form['description'], 'New' ])
             g.db.commit()
             return redirect(url_for('show_tasks'))
 
@@ -93,7 +93,7 @@ def show_task(task_id):
     task = [dict(_id=row[0], time=row[1], title=row[2], description=row[3], status=row[4]) for row in cur.fetchall()]
 
 
-    cur = g.db.execute('SELECT id, time, txt FROM comments WHERE task_id = ?;', (task_id, ))
+    cur = g.db.execute('SELECT id, time, txt FROM comments WHERE task_id = ? ORDER BY time DESC;', (task_id, ))
     comments = [dict(_id=row[0], time=row[1], txt=row[2]) for row in cur.fetchall()]
 
     return render_template('task.html', task=task[0], comments=comments)
@@ -162,7 +162,7 @@ def comment_task(task_id):
     if not session.get('logged_in'):
         abort(403)
     
-    g.db.execute('INSERT INTO comments (time, txt, task_id) VALUES (?, ?, ?);', [datetime.datetime.now(), request.form['txt'], task_id ])  
+    g.db.execute('INSERT INTO comments (time, txt, task_id) VALUES (?, ?, ?);', [datetime.datetime.now().strftime('%x %X'), request.form['txt'], task_id ])  
     g.db.commit()
 
     return redirect(url_for('show_task', task_id=task_id))
