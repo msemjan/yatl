@@ -36,7 +36,8 @@ export YATL_PASSWORD="your new password"
 
 The default password is `PASSWORD`.
 
-If you want your database somewhere else than in this directory, modify the following line in the `yatl.py` file:
+If you want your database somewhere else than in this directory, modify the
+following line in the `yatl.py` file:
 ```
 DATABASE = './yatl.db'
 ```
@@ -46,4 +47,5 @@ To run localy, just run:
 python src/yatl.py
 ```
 
-Otherwise, you will need to do couple more steps. To deploy your app on apache server, follow this [article](https://pythonbasics.org/deploy-flask-app/).
+Otherwise, you will need to do couple more steps. To deploy your app on apache
+server, follow this [article](https://pythonbasics.org/deploy-flask-app/).
